@@ -1,0 +1,32 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "api/**/*.php",
+        "use": "@vercel/php"
+      },
+      {
+        "src": "public/**/*.html",
+        "use": "@vercel/static"
+      },
+      {
+        "src": "public/**/*.css",
+        "use": "@vercel/static"
+      },
+      {
+        "src": "public/**/*.js",
+        "use": "@vercel/static"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "/api/$1"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/public/$1"
+      }
+    ]
+  }
+  
