@@ -16,6 +16,41 @@
   </head>
 
   <body>
+    <script src="../public/js/login.js"></script>
+    <script src="../public/js/search.js"></script>
+    <script>
+        function showError(message) {
+            const errorPopup = document.getElementById('error-popup');
+            const overlay = document.getElementById('overlay');
+            errorPopup.textContent = message;
+            errorPopup.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        function closeAllPopups() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('login-popup').style.display = 'none';
+            document.getElementById('search-popup').style.display = 'none';
+            document.getElementById('error-popup').style.display = 'none';
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            showError(urlParams.get('error'));
+        }
+
+        // Function to show the login popup
+        function openLoginPopup() {
+            document.getElementById('login-popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        // Add event listener to the login button
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginButton = document.querySelector('.login-btn');
+            loginButton.addEventListener('click', openLoginPopup);
+        });
+    </script>
 
     <!-- Navigation -->
     <div class="navigation">
@@ -29,7 +64,7 @@
       </div>
       <div class="navigation-right">
         <a href="#"><img src="images/shopping-bag.png" alt=""></a>
-        <button class="login-btn" href="../src/index.php">Login</button>
+        <button class="login-btn" href="../src/admin_dashboard.php">Login</button>
       </div>
     </div>
 
@@ -104,6 +139,33 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" charset="utf-8"></script>
     <script src="app.js" charset="utf-8"></script>
+    <!-- Popups and Overlays -->
+    <div id="overlay" onclick="closeAllPopups()"></div>
+
+    <div id="error-popup"></div>
+
+    <div id="login-popup">
+        <form action="../api/auth/login.php" method="post">
+            <input class="popup-input" type="text" name="username" placeholder="Username" required>
+            <input class="popup-input" type="password" name="password" placeholder="Password" required>
+            <button type="submit" class="popup-button">Login</button>
+            <button type="button" class="popup-button" onclick="window.location.href='/register.php'">Register</button>
+        </form>
+    </div>
+
+    <div id="search-popup">
+        <form action="/search.php" method="get">
+            <input class="popup-input" type="text" name="query" placeholder="Search for products...">
+            <button type="submit" class="popup-button">Search</button>
+        </form>
+    </div>
   </body>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Shoe Store. All Rights Reserved.</p>
+    </footer>
+
+   
+
 
 </html>

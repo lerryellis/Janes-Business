@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Jane's Shoe Business</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
+    <link rel="stylesheet" href="../public/css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Admin Dashboard</h1>
+            <nav>
+                <button onclick="showSection('product-management')">Product Management</button>
+                <button onclick="showSection('order-management')">Order Management</button>
+                <button onclick="showSection('report-generation')">Generate Reports</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Product Management Section -->
+            <section id="product-management" class="dashboard-section">
+                <h2>Product Management</h2>
+                <form id="product-form">
+                    <input type="text" id="product_name" placeholder="Product Name" required>
+                    <input type="number" id="product_price" placeholder="Price" required>
+                    <button type="button" onclick="addProduct()">Add Product</button>
+                </form>
+                <div id="product-list">
+                    <!-- Product list will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Order Management Section -->
+            <section id="order-management" class="dashboard-section">
+                <h2>Order Management</h2>
+                <div id="order-list">
+                    <!-- Orders will be displayed here -->
+                </div>
+            </section>
+
+            <!-- Report Generation Section -->
+            <section id="report-generation" class="dashboard-section">
+                <h2>Generate Reports</h2>
+                <button onclick="viewSales()">View Sales</button>
+                <div id="report-output">
+                    <p>Sales report feature coming soon!</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../public/js/dashboard.js"></script>
+</body>
+</html>
