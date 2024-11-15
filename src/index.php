@@ -17,20 +17,51 @@ session_start();
 </head>
 <body>
     <!-- Navigation -->
-    <div class="navigation">
-        <div class="navigation-left">
-            <a href="#">Shoes</a>
-            <a href="#">Clothes</a>
-            <a href="#">Accessories</a>
-        </div>
-        <div class="navigation-center">
-            <img src="images/logo.png" alt="Logo">
-        </div>
-        <div class="navigation-right">
-            <a href="#"><img src="images/shopping-bag.png" alt="Shopping Bag"></a>
-            <button class="login-btn" onclick="window.location.href='login.php'">Login</button>
+<div class="navigation">
+    <div class="navigation-left">
+        <a href="#">Men</a>
+        <a href="#">Women</a>
+        <a href="#">Kids</a>
+    </div>
+    <div class="navigation-center">
+        <img src="images/logo.png" alt="Logo">
+    </div>
+   
+
+<div class="navigation-right">
+    <a href="#"><img src="images/shopping-bag.png" alt="Shopping Bag"></a>
+    <span id="username-display"></span> <!-- Display the logged-in user's name here -->
+    <button class="login-btn" id="login-btn" onclick="openPopup()">Login</button>
+</div>
+</div>
+
+<!-- Popup Container -->
+<div id="popup" class="popup-overlay" style="display: none;">
+    <div class="popup-content">
+        <span class="close-btn" onclick="closePopup()">x</span>
+        
+        <!-- Login Form -->
+        <div id="login-form">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="button" onclick="authenticateUser()">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="switchToRegister()">Register here</a></p>
         </div>
     </div>
+</div>
+
+<!-- Username Display (hidden by default) -->
+<div class="user-info" id="user-info" style="display: none;">
+    Welcome, <span id="username-display"></span>!
+</div>
+
 
     <!-- Slider Wrapper -->
     <div class="css-slider-wrapper">
@@ -75,5 +106,7 @@ session_start();
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="app.js"></script>
+    <script src="popup.js" defer></script>
+
 </body>
 </html>

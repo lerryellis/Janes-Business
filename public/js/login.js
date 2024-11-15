@@ -57,3 +57,17 @@ function showError(message) {
 function closeAllPopups() {
     $('#overlay, #error-popup, #login-popup').fadeOut();
 }
+
+
+if (data.success) {
+    if (data.role === 'admin') {
+        window.location.href = 'admin_dashboard.php'; // Redirect to admin dashboard
+    } else {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("username-display").textContent = "Hello, " + data.username; // Display username for non-admin users
+        document.getElementById("user-info").style.display = "block"; // Show username info
+        document.getElementById("login-btn").style.display = "none"; // Hide login button if needed
+    }
+} else {
+    alert(data.message || "Invalid credentials");
+}

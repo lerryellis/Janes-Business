@@ -1,57 +1,41 @@
 <?php
 session_start();
+include('..//api/auth/db_connection.php');
 
-// Database connection parameters
-$servername = "localhost"; // or your database server
-$username = "root"; // database username
-$password = ""; // database password
-$dbname = "janes_shoes"; // database name
+// Get the JSON input
+$data = json_decode(file_get_contents("php://input"), true);
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$username = $data['username'] ?? '';
+$password = $data['password'] ?? '';
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$response = ['success' => false, 'message' => 'Invalid credentials'];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get input values
-    $input_username = $_POST['username'];
-    $input_password = $_POST['password'];
-
-    // Prepare and bind SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT password FROM users WHERE username = ?");
-    $stmt->bind_param("s", $input_username);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        // User exists, now retrieve the password
-        $stmt->bind_result($stored_password);
-        $stmt->fetch();
-
-        // Verify password
-        if ($input_password === $stored_password) {
-            // Successful login
-            $_SESSION['user'] = $input_username;
-            header("Location: /janes_business/Janes-Business/src/admin_dashboard.php"); // Redirect to the dashboard
-            exit();
-        } else {
-            // Invalid password, set error message in session
-            $_SESSION['error_message'] = "Invalid username or password!";
-        }
-    } else {
-        // Invalid username, set error message in session
-        $_SESSION['error_message'] = "Invalid username or password!";
-    }
-
-    // Close statement and connection
-    $stmt->close();
-    $conn->close();
-
-    // Redirect back to index.php
-    header("Location: /janes_business/Janes-Business/src/index.php"); 
+if (empty($username) || empty($password)) {
+    $response['message'] = 'Please fill in both fields';
+    echo json_encode($response);
     exit();
 }
+
+// Check if the user exists in the database
+$stmt = $conn->prepare("SELECT username, password, role FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+if ($user && $user['password'] === $password) { // For plaintext password
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['role'] = $user['role'];
+
+    if ($user['role'] === 'admin') {
+        $response = ['success' => true, 'redirect' => '../../admin_dashboard.php', 'role' => 'admin'];
+    } else {
+        $response = ['success' => true, 'username' => $user['username']];
+    }
+} else {
+    $response['message'] = 'Incorrect username or password';
+}
+
+echo json_encode($response);
+$conn->close();
 ?>

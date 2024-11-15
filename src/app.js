@@ -30,3 +30,9 @@ function handleNext() {
   }
 
 }
+function logout() {
+  fetch('api/auth/logout.php')
+  .then(() => {
+      window.location.reload();
+  });
+}
