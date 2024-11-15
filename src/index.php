@@ -41,17 +41,19 @@ session_start();
         <span class="close-btn" onclick="closePopup()">x</span>
         
         <!-- Login Form -->
-        <div id="login-form">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+        <form id="loginForm" onsubmit="authenticateUser(); return false;">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required>
 
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+    
+    <!-- Show Password Checkbox -->
+    <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
+    <label for="show-password">Show Password</label>
 
-                <button type="button" onclick="authenticateUser()">Login</button>
-            </form>
+    <button type="button" onclick="authenticateUser()">Login</button>
+</form>
             <p>Don't have an account? <a href="#" onclick="switchToRegister()">Register here</a></p>
         </div>
     </div>
