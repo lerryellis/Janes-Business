@@ -1,47 +1,58 @@
 <?php
-session_start();
-include('../api/auth/db_connection.php');
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "janes_shoes";
 
-// Get the JSON input
-$data = json_decode(file_get_contents("php://input"), true);
+// Establish connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Debugging: Log the received data
-error_log("Received data: " . print_r($data, true));
-
-$username = $data['username'] ?? '';
-$password = $data['password'] ?? '';
-
-$response = ['success' => false, 'message' => 'Invalid credentials'];
-
-if (empty($username) || empty($password)) {
-    $response['message'] = 'Please fill in both fields';
-    echo json_encode($response);
-    exit();
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if the user exists in the database
-$stmt = $conn->prepare("SELECT username, password, role FROM users WHERE username = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+// Check if request method is POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get username and password from request body
+    $data = json_decode(file_get_contents("php://input"), true);
+    $username = $data["username"];
+    $password = $data["password"];
 
-if ($user && $user['password'] === $password) { // Plain-text password check
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['role'] = $user['role'];
+    // Query to check if user exists
+    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    $result = $conn->query($sql);
 
-    if ($user['role'] === 'admin') {
-        $response = ['success' => true, 'redirect' => 'admin_dashboard.php', 'role' => 'admin'];
+    // Check if user exists
+    if ($result->num_rows > 0) {
+        // Get user data
+        $row = $result->fetch_assoc();
+
+        // Set response data
+        $responseData = [
+            "success" => true,
+            "username" => $row["username"],
+            "role" => $row["role"],
+            "redirect" => "admin_dashboard.php" // Change to desired redirect URL
+        ];
+
+        // Send response
+        header("Content-Type: application/json");
+        echo json_encode($responseData);
     } else {
-        $response = ['success' => true, 'username' => $user['username']];
+        // Set response data
+        $responseData = [
+            "success" => false,
+            "message" => "Invalid username or password"
+        ];
+
+        // Send response
+        header("Content-Type: application/json");
+        echo json_encode($responseData);
     }
-} else {
-    $response['message'] = 'Incorrect username or password';
 }
 
-// Debugging: Log the response sent to the client
-error_log("Response: " . print_r($response, true));
-
-echo json_encode($response);
+// Close database connection
 $conn->close();
 ?>

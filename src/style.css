@@ -466,3 +466,78 @@ body {
 .popup-content button:hover {
   background-color: #45a049;
 }
+
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+.section {
+  margin: 20px auto;
+  width: 80%;
+}
+
+.products {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.product-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.product-box img {
+  max-width: 100%; /* Ensures the image fits within the box's width */
+  max-height: 150px; /* Limits the height to 150px (adjust as needed) */
+  object-fit: cover; /* Ensures the image is cropped to fit, if necessary */
+  border-radius: 5px; /* Adds a slight rounding to the image edges (optional) */
+  margin: 0 auto; /* Centers the image inside the box */
+  display: block; /* Ensures proper centering */
+}
