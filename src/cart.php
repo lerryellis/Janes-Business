@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart_data'])) {
         <button>Proceed to Payment</button>
     <?php else: ?>
         <p>Your cart is empty.</p>
-        <button onclick="window.location.href='products.php'">Go Back to Products</button>
+        <button onclick="window.location.href='product.php'">Go Back to Products</button>
     <?php endif; ?>
 </body>
 </html>

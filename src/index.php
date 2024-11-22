@@ -19,18 +19,18 @@ session_start();
     <!-- Navigation -->
 <div class="navigation">
     <div class="navigation-left">
-        <a href="#">Men</a>
-        <a href="#">Women</a>
-        <a href="#">Kids</a>
+        <a href="men.php">Men</a>
+        <a href="women.php">Women</a>
+        <a href="kids.php">Kids</a>
     </div>
     <div class="navigation-center">
-        <img src="images/logo.png" alt="Logo">
+        <img src="images/logo2.png" alt="Logo">
     </div>
    
 
 <div class="navigation-right">
-    <a href="#"><img src="images/shopping-bag.png" alt="Shopping Bag"></a>
-    <span id="username-display"></span> <!-- Display the logged-in user's name here -->
+    <a href="cart.php"><img src="images/shopping-bag.png" alt="Shopping Bag"></a>
+    <span id="username-display" style="color: white;"></span> <!-- Display the logged-in user's name here -->
     <button class="login-btn" id="login-btn" onclick="openPopup()">Login</button>
 </div>
 </div>

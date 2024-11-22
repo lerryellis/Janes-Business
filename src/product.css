@@ -57,7 +57,7 @@ h2 {
 
 .product-container {
     display: flex;
-    overflow-x: scroll;
+    overflow-x: hidden;
     gap: 15px;
     padding: 10px 0;
     justify-content: center;
@@ -114,139 +114,73 @@ button:hover {
     background-color: #555;
 }
 
-/* General page styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    margin: 0;
+/* Cart popup styling */
+#cart-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
     padding: 20px;
+    width: 300px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
 }
 
-h1 {
+#cart-popup .popup-content {
     text-align: center;
-    color: #007bff;
-    margin-bottom: 20px;
 }
 
-/* Table styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px auto;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+#cart-popup .popup-content h2 {
+    margin-bottom: 10px;
 }
 
-thead {
-    background-color: #007bff;
+#cart-popup .popup-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#cart-popup .popup-content li {
+    margin-bottom: 10px;
+}
+
+#cart-popup .popup-content button {
+    margin-top: 20px;
+}
+#cart-popup .popup-content form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#cart-popup .popup-content input[type="submit"] {
+    background-color: #333;
     color: white;
-}
-
-thead th {
-    text-align: left;
     padding: 10px;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tbody tr:hover {
-    background-color: #e6f7ff;
-}
-
-td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-/* Button styling */
-button {
-    background-color: #007bff;
-    color: white;
     border: none;
-    padding: 8px 12px;
     border-radius: 5px;
+    font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
-
-button[type="submit"] {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 20px;
-}
-
-button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-/* Red trash icon button */
-button[style*="color: red"] {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: red;
-}
-
-button[style*="color: red"]:hover {
-    color: darkred;
-}
-
-/* Empty cart message styling */
-p {
-    text-align: center;
-    font-size: 18px;
-    color: #555;
-}
-
-/* Form alignment */
-form {
-    text-align: center;
-    margin-top: 20px;
+#cart-popup .popup-content input[type="submit"]:hover {
+    background-color: #555;
 }
 
 /* Responsive styling */
 @media (max-width: 600px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
+    .product-container {
+        flex-direction: column;
+    }
+
+    .product-box {
         width: 100%;
     }
 
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    tbody tr {
-        margin-bottom: 15px;
-        background: white;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    td {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        text-align: left;
-    }
-
-    td:before {
-        content: attr(data-label);
-        font-weight: bold;
-        text-transform: uppercase;
+    #cart-popup {
+        width: 80%;
     }
 }
