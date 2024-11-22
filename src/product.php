@@ -57,7 +57,30 @@ if ($conn->connect_error) {
 </head>
 <body>
     <h1>Products</h1>
-
+<!-- Men Section -->
+<section id="men">
+    <h2>Men</h2>
+    <div class="product-container" id="men-container">
+        <?php
+        $query = "SELECT * FROM products WHERE category='Men' LIMIT 4";
+        $result = $conn->query($query);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "
+                <div class='product-box'>
+                    <img src='{$row['image_url']}' alt='{$row['name']}' class='product-image'>
+                    <h3>{$row['name']}</h3>
+                    <p>Price: \${$row['price']}</p>
+                    <button onclick='addToCart(" . json_encode($row) . ")'>Add to Cart</button>
+                </div>";
+            }
+        } else {
+            echo "<p>No products found in this category.</p>";
+        }
+        ?>
+        <button onclick="window.location.href='men.php'">View More</button>
+    </div>
+</section>
     <!-- Men Section -->
     <section id="men">
         <h2>Men</h2>
