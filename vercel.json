@@ -1,5 +1,15 @@
 {
-  "rewrites": [
-    { "source": "/register", "destination": "/public/register.php" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.php",
+      "use": "@vercel/static-build"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/src/index",
+      "dest": "index.php"
+    }
   ]
 }
