@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Men's Products</title>
+    <title> Women products</title>
     <link rel="stylesheet" href="product.css">
 </head>
 <body>
@@ -44,7 +44,7 @@ if ($conn->connect_error) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Men's Products</title>
+    <title>Women Products</title>
     <link rel="stylesheet" href="men.css">
 
     <!-- Fonts -->
@@ -78,7 +78,7 @@ if ($conn->connect_error) {
     
     <div class="product-container">
         <?php
-        $query = "SELECT * FROM products WHERE category='Men' LIMIT 4";
+        $query = "SELECT * FROM products WHERE category='women' LIMIT 4";
         $result = $conn->query($query);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

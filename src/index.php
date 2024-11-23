@@ -35,26 +35,45 @@ session_start();
 </div>
 </div>
 
+
 <!-- Popup Container -->
 <div id="popup" class="popup-overlay" style="display: none;">
     <div class="popup-content">
         <span class="close-btn" onclick="closePopup()">x</span>
         
         <!-- Login Form -->
-        <form id="loginForm" onsubmit="authenticateUser(); return false;">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required>
+        <form id="loginForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
 
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-    
-    <!-- Show Password Checkbox -->
-    <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
-    <label for="show-password">Show Password</label>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
 
-    <button type="button" onclick="authenticateUser()">Login</button>
-</form>
+            <!-- Show Password Checkbox -->
+            <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
+            <label for="show-password">Show Password</label>
+
+            <button type="button" onclick="authenticateUser()">Login</button>
             <p>Don't have an account? <a href="#" onclick="switchToRegister()">Register here</a></p>
+        </form>
+
+  <!-- Register Form -->
+  <form id="registerForm" style="display: none;">
+            <label for="register-username">Username</label>
+            <input type="text" id="register-username" name="register-username" required>
+
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" name="register-email" required>
+
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" name="register-password" required>
+
+            <label for="register-confirm-password">Confirm Password</label>
+            <input type="password" id="register-confirm-password" name="register-confirm-password" required>
+
+            <button type="button" onclick="registerUser()">Register</button>
+            <p>Already have an account? <a href="#" onclick="switchToLogin()">Login here</a></p>
+        </form>
         </div>
     </div>
 </div>

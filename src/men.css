@@ -3,18 +3,18 @@
   }
   
   body {
-    overflow: auto; /* Changed from hidden to auto */
+    overflow: auto;
     width: 100%;
-    height: 100vh; /* Changed from 100% to 100vh */
+    height: 100vh;
     padding: 0;
     margin: 0;
     font-family: 'Montserrat', sans-serif;
   }
   
-  /* Navigation */
+  /* Make navigation sticky */
   .navigation {
     position: fixed; /* Changed from absolute to fixed */
-    top: 0; /* Added */
+    top: 0;
     width: 100%;
     height: 100px;
     padding: 0 100px;
@@ -22,9 +22,14 @@
     align-items: center;
     justify-content: space-between;
     z-index: 1;
-    background-color: #ffffff; /* Added */
+    background-color: #ffffff; /* Added background color */
+    border-bottom: 1px solid #dddddd; /* Added border */
   }
   
+  /* Add separation between navigation and content */
+  .product-container {
+    margin-top: 150px; /* Increased margin to add separation */
+  }
   .navigation-left {
     margin-left: 0; /* Changed from -33px to 0 */
   }
@@ -81,6 +86,9 @@
   .login-btn:hover {
     transform: scale(1.06);
   }
+
+ 
+
   /* Product details popup */
 .popup {
     position: fixed;
@@ -99,9 +107,8 @@
   }
   
   .popup-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    overflow-y: auto;
+    max-height: 70vh; /* Reduced max-height */
   }
   
   #product-image {
@@ -128,12 +135,14 @@
     margin-bottom: 20px;
   }
   
- /* Add to cart and close buttons */
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+
+/* Reduce size of add to cart and close buttons */
+.button-container button {
+    width: 100px; /* Reduced width */
+    height: 30px; /* Reduced height */
+    font-size: 14px; /* Reduced font-size */
   }
+
   
   #add-to-cart-btn, #close-popup-btn {
     width: 45%; /* Changed from 150px to 45% */
@@ -154,3 +163,4 @@
     background-color: #201f1f;
     color: #ffffff;
   }
+  
