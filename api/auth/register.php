@@ -1,5 +1,17 @@
 <?php
-require_once '../config/database.php';
+// Database connection settings
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "janes_shoes";
+
+// Establish connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,12 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Insert the user data into the database
             $query = "INSERT INTO users (username, email, phone_number, password) VALUES ('$username', '$email', '$phoneNumber', '$hashedPassword')";
-            $result = $conn->query($query);
 
-            if ($result) {
+            if ($conn->query($query) === TRUE) {
                 echo json_encode(['success' => true, 'message' => 'Registration successful.']);
             } else {
-                echo json_encode(['success' => false, 'message' => 'Registration failed.']);
+                echo json_encode(['success' => false, 'message' => 'Error: ' . $query . '<br>' . $conn->error]);
             }
         }
     } else {
@@ -40,4 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
 }
+
+// Close the database connection
+$conn->close();
 ?>

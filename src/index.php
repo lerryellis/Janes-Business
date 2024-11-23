@@ -57,23 +57,30 @@ session_start();
             <p>Don't have an account? <a href="#" onclick="switchToRegister()">Register here</a></p>
         </form>
 
-  <!-- Register Form -->
-  <form id="registerForm" style="display: none;">
-            <label for="register-username">Username</label>
-            <input type="text" id="register-username" name="register-username" required>
+ <!-- Register Form -->
+<form id="registerForm" style="display: none;">
+    <label for="register-username">Username</label>
+    <input type="text" id="register-username" name="register-username" required>
 
-            <label for="register-email">Email</label>
-            <input type="email" id="register-email" name="register-email" required>
+    <label for="register-email">Email</label>
+    <input type="email" id="register-email" name="register-email" required>
 
-            <label for="register-password">Password</label>
-            <input type="password" id="register-password" name="register-password" required>
+    <label for="register-phone-number">Phone Number</label>
+    <input type="tel" id="register-phone-number" name="register-phone-number" required maxlength="10" minlength="10" pattern="[0-9]{10}">
 
-            <label for="register-confirm-password">Confirm Password</label>
-            <input type="password" id="register-confirm-password" name="register-confirm-password" required>
+    <label for="register-password">Password</label>
+    <input type="password" id="register-password" name="register-password" required>
 
-            <button type="button" onclick="registerUser()">Register</button>
-            <p>Already have an account? <a href="#" onclick="switchToLogin()">Login here</a></p>
-        </form>
+    <label for="register-confirm-password">Confirm Password</label>
+    <input type="password" id="register-confirm-password" name="register-confirm-password" required>
+
+    <!-- Show Password Checkbox -->
+    <input type="checkbox" id="register-show-password" onclick="toggleRegisterPasswordVisibility()">
+    <label for="register-show-password">Show Password</label>
+
+    <button type="button" onclick="registerUser()">Register</button>
+    <p>Already have an account? <a href="#" onclick="switchToLogin()">Login here</a></p>
+</form>
         </div>
     </div>
 </div>

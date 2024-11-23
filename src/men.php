@@ -114,7 +114,6 @@ if ($conn->connect_error) {
   </div>
 </div>
 
-
     <script>
 
         let cart = [];

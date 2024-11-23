@@ -17,6 +17,7 @@ if (isset($_SESSION['cart'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
     <link rel="stylesheet" href="men.css">
+    <link rel="stylesheet" href="product.css">
 </head>
 <body>
 <h1></h1>

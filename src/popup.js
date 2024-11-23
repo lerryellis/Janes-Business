@@ -78,24 +78,20 @@ function switchToLogin() {
 function registerUser() {
     const registerUsername = document.getElementById("register-username").value;
     const registerEmail = document.getElementById("register-email").value;
+    const registerPhoneNumber = document.getElementById("register-phone-number").value;
     const registerPassword = document.getElementById("register-password").value;
     const registerConfirmPassword = document.getElementById("register-confirm-password").value;
 
-    if (!registerUsername || !registerEmail || !registerPassword || !registerConfirmPassword) {
+    if (!registerUsername || !registerEmail || !registerPhoneNumber || !registerPassword || !registerConfirmPassword) {
         alert("Please fill in all fields.");
         return;
     }
 
-    if (registerPassword !== registerConfirmPassword) {
-        alert("Passwords do not match.");
-        return;
-    }
-
-    // Perform the fetch request to register.php
-    fetch('../api/auth/register.php', {
+     // Perform the fetch request to register.php
+     fetch('../api/auth/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registerUsername, registerEmail, registerPassword })
+        body: JSON.stringify({ registerUsername, registerEmail, phone_number: registerPhoneNumber, registerPassword })
     })
     .then(response => response.json())
     .then(data => {
@@ -105,7 +101,9 @@ function registerUser() {
         } else {
             alert(data.message);
         }
+
     })
+    
     .catch(error => {
         console.error("Error during fetch:", error);
         alert("An error occurred. Please try again.");
@@ -119,3 +117,19 @@ document.getElementById("popup").addEventListener("keydown", function(event) {
         authenticateUser();
     }
 });
+
+// Toggle Register Password Visibility
+function toggleRegisterPasswordVisibility() {
+    const registerPasswordInput = document.getElementById("register-password");
+    const registerConfirmPasswordInput = document.getElementById("register-confirm-password");
+    const registerShowPasswordCheckbox = document.getElementById("register-show-password");
+
+    // Toggle between text and password type
+    if (registerShowPasswordCheckbox.checked) {
+        registerPasswordInput.type = "text";
+        registerConfirmPasswordInput.type = "text";
+    } else {
+        registerPasswordInput.type = "password";
+        registerConfirmPasswordInput.type = "password";
+    }
+}
