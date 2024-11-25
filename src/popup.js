@@ -32,7 +32,7 @@ function authenticateUser() {
     }
 
     // Perform the fetch request to login.php
-    fetch('../api/auth/login.php', {
+    fetch('..//api/auth/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -75,7 +75,8 @@ function switchToLogin() {
 }
 
 // Function to register user via AJAX
-function registerUser() {
+function registerUser(event) {
+    event.preventDefault();
     const registerUsername = document.getElementById("register-username").value;
     const registerEmail = document.getElementById("register-email").value;
     const registerPhoneNumber = document.getElementById("register-phone-number").value;
@@ -87,29 +88,37 @@ function registerUser() {
         return;
     }
 
-     // Perform the fetch request to register.php
-     fetch('../api/auth/register.php', {
+    if (registerPassword !== registerConfirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    const data = {
+        registerUsername,
+        registerEmail,
+        registerPhoneNumber,
+        registerPassword
+    };
+
+    fetch('../api/auth/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registerUsername, registerEmail, phone_number: registerPhoneNumber, registerPassword })
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("Registration successful. Please log in.");
+            alert("Registration successful!");
             switchToLogin();
         } else {
-            alert(data.message);
+            alert("Error with registration: " + data.message);
         }
-
     })
-    
     .catch(error => {
         console.error("Error during fetch:", error);
         alert("An error occurred. Please try again.");
     });
 }
-
 // Listen for the Enter key on the popup
 document.getElementById("popup").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {

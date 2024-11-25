@@ -26,9 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phoneNumber = $data['registerPhoneNumber'];
         $password = $data['registerPassword'];
 
-        // Hash the password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
         // Check if the username, email, and phone number are already taken
         $query = "SELECT * FROM users WHERE username = '$username' OR email = '$email' OR phone_number = '$phoneNumber'";
         $result = $conn->query($query);
@@ -36,6 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows > 0) {
             echo json_encode(['success' => false, 'message' => 'Username, email, or phone number is already taken.']);
         } else {
+            // Hash the password
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
             // Insert the user data into the database
             $query = "INSERT INTO users (username, email, phone_number, password) VALUES ('$username', '$email', '$phoneNumber', '$hashedPassword')";
 

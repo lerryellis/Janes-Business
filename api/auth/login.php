@@ -1,4 +1,7 @@
 <?php
+// Start the session
+session_start();
+
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -17,8 +20,8 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get username and password from request body
     $data = json_decode(file_get_contents("php://input"), true);
-    $username = $data["username"];
-    $password = $data["password"];
+    $username = $conn->real_escape_string($data["username"]);
+    $password = $conn->real_escape_string($data["password"]);
 
     // Query to check if user exists
     $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
@@ -28,6 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         // Get user data
         $row = $result->fetch_assoc();
+
+        // Set session variables
+        $_SESSION['username'] = $row["username"];
+        $_SESSION['role'] = $row["role"];
 
         // Set response data
         $responseData = [

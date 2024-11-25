@@ -2,7 +2,6 @@
 session_start();
 session_unset();
 session_destroy();
-
-// Redirect to the homepage
-header("Location: ..//src/index.php");
+header("Location: index.php"); // Redirect to the login page
+exit();
 ?>

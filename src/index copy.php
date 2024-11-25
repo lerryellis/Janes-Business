@@ -1,23 +1,5 @@
 <?php
-// Start the session to access session variables
-session_start();
-
-// Display the logged-in user's name
-if (isset($_SESSION['username'])) {
-    $username = htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8');
-    $loggedIn = true;
-} else {
-    $username = "Guest";  // Default if not logged in
-    $loggedIn = false;
-}
-
-// Initialize the cart if it's not already initialized
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-// Cart count logic
-$cartCount = count($_SESSION['cart']);
+require_once '..//api/auth/session.php';
 ?>
 
 <!DOCTYPE html>
@@ -26,31 +8,32 @@ $cartCount = count($_SESSION['cart']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slider</title>
+    <!-- Link CSS file -->
     <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Oswald" rel="stylesheet">
     <meta name="robots" content="noindex,follow">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-    </style>
 </head>
 <body>
     <!-- Navigation -->
-    <div class="navigation">
-        <div class="navigation-left">
-            <a href="men.php">Men</a>
-            <a href="women.php">Women</a>
-            <a href="kids.php">Kids</a>
-        </div>
-        <div class="navigation-center">
-            <img src="images/logo2.png" alt="Logo">
-        </div>
-        <div class="navigation-right">
-    <a href="checkout.php"><img src="images/bag-black.png" alt="Shopping Bag"></a>
-    <span id="cart-count"><?php echo $cartCount; ?></span> <!-- Display the number of items in the cart -->
-    <span id="username-display"><?php echo "Welcome, " . $username; ?></span> <!-- Display the logged-in user's name here -->
-    <button class="login-btn" id="login-btn" onclick="openPopup()"><?php echo $loggedIn ? 'Logout' : 'Login'; ?></button>
-</div>
+<div class="navigation">
+    <div class="navigation-left">
+        <a href="men.php">Men</a>
+        <a href="women.php">Women</a>
+        <a href="kids.php">Kids</a>
     </div>
+    <div class="navigation-center">
+        <img src="images/logo2.png" alt="Logo">
+    </div>
+   
+
+<div class="navigation-right">
+    <a href="cart.php"><img src="images/shopping-bag.png" alt="Shopping Bag"></a>
+    <span id="username-display" style="color: white;"></span> <!-- Display the logged-in user's name here -->
+    <button class="login-btn" id="login-btn" onclick="openPopup()">Login</button>
+</div>
+</div>
+
 
 <!-- Popup Container -->
 <div id="popup" class="popup-overlay" style="display: none;">
@@ -73,7 +56,7 @@ $cartCount = count($_SESSION['cart']);
             <p>Don't have an account? <a href="#" onclick="switchToRegister()">Register here</a></p>
         </form>
 
-<!-- Register Form --><!-- Register Form -->
+ <!-- Register Form -->
 <form id="registerForm" style="display: none;">
     <label for="register-username">Username</label>
     <input type="text" id="register-username" name="register-username" required>
@@ -86,6 +69,9 @@ $cartCount = count($_SESSION['cart']);
 
     <label for="register-password">Password</label>
     <input type="password" id="register-password" name="register-password" required>
+
+    <label for="register-confirm-password">Confirm Password</label>
+    <input type="password" id="register-confirm-password" name="register-confirm-password" required>
 
     <!-- Show Password Checkbox -->
     <input type="checkbox" id="register-show-password" onclick="toggleRegisterPasswordVisibility()">
@@ -129,50 +115,25 @@ $cartCount = count($_SESSION['cart']);
             ["model-4.png", "Classic Sneakers", 90]
         ];
 
-
-
-
-
-
-
-        
-       // Loop to generate sliders
-foreach ($products as $index => $product) {
-    echo "<div class='slider slide-" . ($index + 1) . "'>
-            <img src='images/{$product[0]}' alt='Model'>
-            <div class='slider-content'>
-                <h4 class='new-product-label'>Product</h4>
-                <h2>{$product[1]}</h2>                <a href='product.php?product={$product[1]}&price={$product[2]}'>
-                    <button type='button' class='buy-now-btn'>\${$product[2]}</button>
-                </a>
-            </div>
-            <div class='number-pagination'><span>" . ($index + 1) . "</span></div>
-          </div>";
-}
-?>
+        // Loop to generate sliders
+        foreach ($products as $index => $product) {
+            echo "<div class='slider slide-" . ($index + 1) . "'>
+                    <img src='images/{$product[0]}' alt='Model'>
+                    <div class='slider-content'>
+                        <h4 class='new-product-label'>Product</h4>
+                        <h2>{$product[1]}</h2>
+                        <button type='button' class='buy-now-btn'>\${$product[2]}</button>
+                    </div>
+                    <div class='number-pagination'><span>" . ($index + 1) . "</span></div>
+                  </div>";
+        }
+        ?>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="app.js"></script>
     <script src="popup.js" defer></script>
-    <script>
-        // PHP will inject the session status into the JavaScript variable
-        var isLoggedIn = <?php echo $loggedIn ? 'true' : 'false'; ?>;
-
-        window.onload = function() {
-            var loginButton = document.getElementById("login-btn");
-            var usernameDisplay = document.getElementById("username-display");
-            
-            if (isLoggedIn) {
-                // Update the button text to "Logout" and show the username
-                loginButton.textContent = "Logout";
-                usernameDisplay.textContent = "Welcome, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>";
-            } else {
-                // Keep the button text as "Login"
-                loginButton.textContent = "Login";
-            }
-        };
-    </script>
 
 </body>
 </html>
