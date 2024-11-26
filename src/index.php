@@ -106,7 +106,7 @@ window.onload = function() {
     if (isLoggedIn) {
         // Update the button text to "Logout" and show the username
         loginButton.textContent = "Logout";
-        loginButton.href = "../auth/api/logout.php";
+        loginButton.href = "../api/auth/logout.php";
         usernameDisplay.textContent = "Welcome, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>";
         // Move the text up or down
         usernameDisplay.style.marginTop = "-5px"; // adjust the value as needed
