@@ -1,36 +1,23 @@
 <?php
+// Start the session to access session variables
 session_start();
 
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "janes_shoes";
-
-// Establish connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Display the logged-in user's name
+if (isset($_SESSION['username'])) {
+    $username = htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8');
+    $loggedIn = true;
+} else {
+    $username = "Guest";  // Default if not logged in
+    $loggedIn = false;
 }
 
-// Handle add to cart functionality
-if (isset($_GET['add_to_cart'])) {
-    $productId = $_GET['add_to_cart'];  // Get the product ID
-    $query = "SELECT * FROM products WHERE id='$productId'";
-    $result = $conn->query($query);
-    $product = $result->fetch_assoc();  // Fetch product details based on the ID
-
-    // Add the product to the cart session
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-    $_SESSION['cart'][] = $product;
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
+// Initialize the cart if it's not already initialized
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
 }
 
+// Cart count logic
+$cartCount = count($_SESSION['cart']);
 ?>
 
 <!DOCTYPE html>
@@ -38,63 +25,14 @@ if (isset($_GET['add_to_cart'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Men's Shoes</title>
-    <link rel="stylesheet" href="product.css">
-    <link rel="stylesheet" href="men.css">
-    <script>
-        // Initialize cart array
-        let cart = <?php echo json_encode($_SESSION['cart'] ?? []); ?>;
-
-        // Update the cart counter in the navbar
-        function updateCartCounter() {
-            const cartCount = cart.length;
-            document.getElementById('cart-counter').innerText = cartCount;
+    <title>Blank Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .navigation {
+            margin-top: 20px; /* Move the navbar down */
+            border-bottom: 1px solid #ccc; /* Add a bottom border */
         }
-
-        // Function to add items to the cart
-        function addToCart(item) {
-            cart.push(item);
-            updateCartPopup();
-            updateCartCounter();
-            alert('Item added to cart!');
-        }
-
-        // Function to update the cart popup
-        function updateCartPopup() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            cartItemsContainer.innerHTML = '';
-            cart.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.textContent = `${item.name} - $${item.price}`;
-                cartItemsContainer.appendChild(li);
-            });
-            // Update hidden input for checkout
-            document.getElementById('cart-data').value = JSON.stringify(cart);
-        }
-
-        // Function to show product details popup
-        function showProductDetails(product) {
-            document.getElementById('product-name').textContent = product.name;
-            document.getElementById('product-image').src = product.image_url;
-            document.getElementById('product-description').textContent = product.description;
-            document.getElementById('product-price').textContent = `$${product.price}`;
-            document.getElementById('add-to-cart-btn').onclick = function() {
-                addToCart(product);
-                document.getElementById('product-details-popup').style.display = 'none';
-            };
-            document.getElementById('close-popup-btn').onclick = function() {
-                document.getElementById('product-details-popup').style.display = 'none';
-            };
-            document.getElementById('product-details-popup').style.display = 'block';
-        }
-
-        // Close popup if clicked outside
-        document.addEventListener('click', function(event) {
-            if (event.target === document.getElementById('product-details-popup')) {
-                document.getElementById('product-details-popup').style.display = 'none';
-            }
-        });
-    </script>
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -105,71 +43,41 @@ if (isset($_GET['add_to_cart'])) {
             <a href="kids.php">Kids</a>
         </div>
         <div class="navigation-center">
-            <a href="index.php">
-                <img src="images/logo3.png" alt="Logo">
-            </a>
+            <img src="images/logo2.png" alt="Logo">
         </div>
         <div class="navigation-right">
-            <a href="checkout.php">
-                <img src="images/bag-black.png" alt="Shopping Bag">
-                <span id="cart-counter">0 </span>
-            </a>
-            <?php if (isset($_SESSION['username'])) { ?>
-                <span id="username-display" style="color: black;"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                <a href="logout.php" style="color: black; margin-left: 10px;">Logout</a>
-            <?php } else { ?>
-                <a href="loginpage.php" style="color: black; margin-left: 10px;">Login</a>
-            <?php } ?>
+            <a href="checkout.php"><img src="images/bag-black.png" alt="Shopping Bag"></a>
+            <span id="cart-count"><?php echo $cartCount; ?></span>
+            <span id="username-display"><?php echo "Welcome, " . $username; ?></span> 
+            <a href="<?php echo $loggedIn ? '../api/auth/logout.php' : 'loginpage.php'; ?>" class="login-btn" id="login-btn"><?php echo $loggedIn ? 'Logout' : 'Login'; ?></a>
         </div>
     </div>
+   
 
-    <!-- Product Section -->
-    <section id="men">
-        <h2>Men's Shoes</h2>
-        <div class="product-container" id="men-container">
-            <?php
-            $query = "SELECT * FROM products WHERE category='Men' LIMIT 4";
-            $result = $conn->query($query);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "
-                    <div class='product-box'>
-                        <img src='{$row['image_url']}' alt='{$row['name']}' class='product-image'>
-                        <h3>{$row['name']}</h3>
-                        <p>Price: \${$row['price']}</p>
-                        <button onclick='showProductDetails(" . json_encode($row) . ")'>View Details</button>
-                        <button onclick='addToCart(" . json_encode($row) . ")'>Add to Cart</button>
-                    </div>";
-                }
-            } else {
-                echo "<p>No products found in this category.</p>";
-            }
-            ?>
-            <button onclick="window.location.href='men.php'">View More</button>
-        </div>
-    </section>
-
-    <!-- Product Details Popup -->
-    <div id="product-details-popup" class="popup" style="display: none;">
-        <div class="popup-content">
-            <h2 id="product-name"></h2>
-            <img id="product-image" alt="" class="product-image">
-            <p id="product-description"></p>
-            <p id="product-price"></p>
-            <div class="button-container">
-                <button id="add-to-cart-btn">Add to Cart</button>
-                <button id="close-popup-btn">Close</button>
-            </div>
-        </div>
-    </div>
+    <!-- Add your content here -->
 
     <script>
-        // Call updateCartCounter to initialize cart count on page load
-        updateCartCounter();
+        // PHP will inject the session status into the JavaScript variable
+        var isLoggedIn = <?php echo $loggedIn ? 'true' : 'false'; ?>;
+
+        window.onload = function() {
+            var loginButton = document.getElementById("login-btn");
+            var usernameDisplay = document.getElementById("username-display");
+            
+            if (isLoggedIn) {
+                // Update the button text to "Logout" and show the username
+                loginButton.textContent = "Logout";
+                usernameDisplay.textContent = "Welcome, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>";
+                // Move the text up or down
+                usernameDisplay.style.marginTop = "-5px"; // adjust the value as needed
+            } else {
+                // Keep the button text as "Login"
+                loginButton.textContent = "Login";
+                // Move the text up or down
+                loginButton.style.marginTop = "-5px"; // adjust the value as needed
+            }
+        };
     </script>
 
-    <?php
-    $conn->close();
-    ?>
 </body>
 </html>

@@ -1,94 +1,57 @@
 <?php
-require_once '..//api/auth/session.php';
+// Start the session to access session variables
+session_start();
+
+// Display the logged-in user's name
+if (isset($_SESSION['username'])) {
+    $username = htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8');
+    $loggedIn = true;
+} else {
+    $username = "Guest";  // Default if not logged in
+    $loggedIn = false;
+}
+
+// Initialize the cart if it's not already initialized
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// Cart count logic
+$cartCount = count($_SESSION['cart']);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slider</title>
-    <!-- Link CSS file -->
     <link rel="stylesheet" href="style.css">
-    <!-- Fonts -->
+    <link rel="stylesheet" href="registration.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Oswald" rel="stylesheet">
     <meta name="robots" content="noindex,follow">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    </style>
 </head>
-<body>
+<body class="font-opensans"> 
     <!-- Navigation -->
-<div class="navigation">
-    <div class="navigation-left">
-        <a href="men.php">Men</a>
-        <a href="women.php">Women</a>
-        <a href="kids.php">Kids</a>
-    </div>
-    <div class="navigation-center">
-        <img src="images/logo2.png" alt="Logo">
-    </div>
-   
-
-<div class="navigation-right">
-    <a href="cart.php"><img src="images/shopping-bag.png" alt="Shopping Bag"></a>
-    <span id="username-display" style="color: white;"></span> <!-- Display the logged-in user's name here -->
-    <button class="login-btn" id="login-btn" onclick="openPopup()">Login</button>
-</div>
-</div>
-
-
-<!-- Popup Container -->
-<div id="popup" class="popup-overlay" style="display: none;">
-    <div class="popup-content">
-        <span class="close-btn" onclick="closePopup()">x</span>
-        
-        <!-- Login Form -->
-        <form id="loginForm">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-
-            <!-- Show Password Checkbox -->
-            <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
-            <label for="show-password">Show Password</label>
-
-            <button type="button" onclick="authenticateUser()">Login</button>
-            <p>Don't have an account? <a href="#" onclick="switchToRegister()">Register here</a></p>
-        </form>
-
- <!-- Register Form -->
-<form id="registerForm" style="display: none;">
-    <label for="register-username">Username</label>
-    <input type="text" id="register-username" name="register-username" required>
-
-    <label for="register-email">Email</label>
-    <input type="email" id="register-email" name="register-email" required>
-
-    <label for="register-phone-number">Phone Number</label>
-    <input type="tel" id="register-phone-number" name="register-phone-number" required maxlength="10" minlength="10" pattern="[0-9]{10}">
-
-    <label for="register-password">Password</label>
-    <input type="password" id="register-password" name="register-password" required>
-
-    <label for="register-confirm-password">Confirm Password</label>
-    <input type="password" id="register-confirm-password" name="register-confirm-password" required>
-
-    <!-- Show Password Checkbox -->
-    <input type="checkbox" id="register-show-password" onclick="toggleRegisterPasswordVisibility()">
-    <label for="register-show-password">Show Password</label>
-
-    <button type="button" onclick="registerUser()">Register</button>
-    <p>Already have an account? <a href="#" onclick="switchToLogin()">Login here</a></p>
-</form>
+    <div class="navigation">
+        <div class="navigation-left">
+            <a href="men.php">Men</a>
+            <a href="women.php">Women</a>
+            <a href="kids.php">Kids</a>
+        </div>
+        <div class="navigation-center">
+            <img src="images/logo2.png" alt="Logo">
+        </div>
+        <div class="navigation-right">
+            <a href="checkout.php"><img src="images/bag-black.png" alt="Shopping Bag"></a>
+            <span id="cart-count"><?php echo $cartCount; ?></span>
+            <span id="username-display"><?php echo "Welcome, " . $username; ?></span> 
+            <a href="loginpage.php" class="login-btn" id="login-btn"><?php echo $loggedIn ? 'Logout' : 'Login'; ?></a>
         </div>
     </div>
-</div>
-
-<!-- Username Display (hidden by default) -->
-<div class="user-info" id="user-info" style="display: none;">
-    Welcome, <span id="username-display"></span>!
-</div>
-
 
     <!-- Slider Wrapper -->
     <div class="css-slider-wrapper">
@@ -118,22 +81,44 @@ require_once '..//api/auth/session.php';
         // Loop to generate sliders
         foreach ($products as $index => $product) {
             echo "<div class='slider slide-" . ($index + 1) . "'>
-                    <img src='images/{$product[0]}' alt='Model'>
-                    <div class='slider-content'>
-                        <h4 class='new-product-label'>Product</h4>
-                        <h2>{$product[1]}</h2>
-                        <button type='button' class='buy-now-btn'>\${$product[2]}</button>
-                    </div>
-                    <div class='number-pagination'><span>" . ($index + 1) . "</span></div>
-                  </div>";
+            <img src='images/{$product[0]}' alt='Model'>
+            <div class='slider-content'>
+                <h4 class='new-product-label'>Product</h4>
+                <h2>{$product[1]}</h2>                <a href='product.php?product={$product[1]}&price={$product[2]}'>
+                    <button type='button' class='buy-now-btn'>\${$product[2]}</button>
+                </a>
+            </div>
+            <div class='number-pagination'><span>" . ($index + 1) . "</span></div>
+          </div>";
         }
         ?>
-    </div>
-
-    <!-- Scripts -->
+            <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="app.js"></script>
-    <script src="popup.js" defer></script>
+    <script>
+    // PHP will inject the session status into the JavaScript variable
+var isLoggedIn = <?php echo $loggedIn ? 'true' : 'false'; ?>;
+
+window.onload = function() {
+    var loginButton = document.getElementById("login-btn");
+    var usernameDisplay = document.getElementById("username-display");
+    
+    if (isLoggedIn) {
+        // Update the button text to "Logout" and show the username
+        loginButton.textContent = "Logout";
+        loginButton.href = "../api/auth/logout.php";
+        usernameDisplay.textContent = "Welcome, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>";
+        // Move the text up or down
+        usernameDisplay.style.marginTop = "-5px"; // adjust the value as needed
+    } else {
+        // Keep the button text as "Login"
+        loginButton.textContent = "Login";
+        loginButton.href = "loginpage.php";
+        // Move the text up or down
+        loginButton.style.marginTop = "-5px"; // adjust the value as needed
+    }
+};
+    </script>
 
 </body>
 </html>
