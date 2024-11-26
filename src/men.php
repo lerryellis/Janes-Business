@@ -1,12 +1,5 @@
 <?php
-session_start(); // Start the session
-
-// Check if the user is logged in
-if (!isset($_SESSION['username'])) {
-    // Redirect to login page if no active session
-    header("Location: login.php");
-    exit;
-}
+session_start();
 
 // Database connection
 $servername = "localhost";
@@ -30,6 +23,9 @@ if (isset($_GET['add_to_cart'])) {
     $product = $result->fetch_assoc();  // Fetch product details based on the ID
 
     // Add the product to the cart session
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
     $_SESSION['cart'][] = $product;
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
@@ -42,7 +38,7 @@ if (isset($_GET['add_to_cart'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Men's Shoes</title>
     <link rel="stylesheet" href="product.css">
     <link rel="stylesheet" href="men.css">
     <script>
@@ -101,8 +97,6 @@ if (isset($_GET['add_to_cart'])) {
     </script>
 </head>
 <body>
-<h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-
     <!-- Navigation -->
     <div class="navigation">
         <div class="navigation-left">
@@ -120,8 +114,12 @@ if (isset($_GET['add_to_cart'])) {
                 <img src="images/bag-black.png" alt="Shopping Bag">
                 <span id="cart-counter">0 </span>
             </a>
-            <span id="username-display" style="color: black;"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-            <a href="logout.php" style="color: black; margin-left: 10px;">Logout</a>
+            <?php if (isset($_SESSION['username'])) { ?>
+                <span id="username-display" style="color: black;"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <a href="logout.php" style="color: black; margin-left: 10px;">Logout</a>
+            <?php } else { ?>
+                <a href="loginpage.php" style="color: black; margin-left: 10px;">Login</a>
+            <?php } ?>
         </div>
     </div>
 

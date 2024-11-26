@@ -1,24 +1,6 @@
 <?php
 session_start(); // Start the session
 
-// Check if the user is logged in
-if (!isset($_SESSION['username'])) {
-    // Redirect to login page if no active session
-    header("Location: login.php");
-    exit;
-}
-// Assuming the product is added via GET request, for example: product.php?add_to_cart=1
-if (isset($_GET['add_to_cart'])) {
-    $productId = $_GET['add_to_cart'];  // Get the product ID
-    $product = $products[$productId];   // Fetch product details based on the ID
-
-    // Add the product to the cart
-    $_SESSION['cart'][] = $product;
-    // Redirect to the same page to avoid reloading the page with the cart data in the URL
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
-}
-
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -58,7 +40,7 @@ if ($conn->connect_error) {
         }
     </style>
     <script>
-        let cart = [];
+        let cart = <?php echo json_encode($_SESSION['cart'] ?? []); ?>;
 
         // Function to add items to the cart
         function addToCart(item) {
@@ -93,7 +75,11 @@ if ($conn->connect_error) {
     </script>
 </head>
 <body>
-<h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
+<?php if (isset($_SESSION['username'])) { ?>
+    <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
+<?php } else { ?>
+    <h1>Welcome, Guest!</h1>
+<?php } ?>
 
     <!-- Navigation -->
     <div class="navigation">
@@ -108,8 +94,12 @@ if ($conn->connect_error) {
         </div>
         <div class="navigation-right">
             <a href="checkout.php"><img src="images/bag-black.png" alt="Shopping Bag"></a>
-            <span id="username-display" style="color: black;"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-            <a href="logout.php" style="color: black; margin-left: 10px;">Logout</a>
+            <?php if (isset($_SESSION['username'])) { ?>
+                <span id="username-display" style="color: black;"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <a href="logout.php" style="color: black; margin-left: 10px;">Logout</a>
+            <?php } else { ?>
+                <a href="loginpage.php" style="color: black; margin-left: 10px;">Login</a>
+            <?php } ?>
         </div>
     </div>
 

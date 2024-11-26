@@ -42,18 +42,11 @@ foreach ($cartData as $item) {
     $totalAmount += $item['price'];
 }
 
-// Check if user is logged in
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-} else {
-    // If not logged in, create a new user or handle as a guest
-    $user_id = 0; // Replace with actual user ID or handle as a guest
-}
-
 // Insert order into database
 $orderDate = date('Y-m-d');
 
-$sql = "INSERT INTO orders (user_id, total_amount, order_date, status) VALUES ('$user_id', '$totalAmount', '$orderDate', 'pending')";
+// Use 0 as default user_id for guest users
+$sql = "INSERT INTO orders (user_id, total_amount, order_date, status) VALUES (0, '$totalAmount', '$orderDate', 'pending')";
 
 if (mysqli_query($conn, $sql)) {
     $order_id = mysqli_insert_id($conn);
@@ -67,7 +60,10 @@ if (mysqli_query($conn, $sql)) {
     // Clear cart session
     unset($_SESSION['cart']);
 
-    echo "Order confirmed! Your order number is $order_id.";
+    // Display success message
+    echo "<h1>Thank you for your order!</h1>";
+    echo "<p>Your order number is $order_id.</p>";
+    echo "<p>We will prepare your order for pickup.</p>";
 } else {
     echo "Error: " . mysqli_error($conn);
 }
