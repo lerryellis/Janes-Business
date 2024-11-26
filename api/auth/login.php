@@ -21,43 +21,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get username and password from request body
     $data = json_decode(file_get_contents("php://input"), true);
     $username = $conn->real_escape_string($data["username"]);
-    $password = $conn->real_escape_string($data["password"]);
+    $password = $data["password"]; // No escaping needed here, since it's used with password_verify later.
 
-    // Query to check if user exists
-    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-    $result = $conn->query($sql);
+    // Query to fetch user with the given username
+    $sql = "SELECT * FROM users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     // Check if user exists
     if ($result->num_rows > 0) {
-        // Get user data
         $row = $result->fetch_assoc();
 
-        // Set session variables
-        $_SESSION['username'] = $row["username"];
-        $_SESSION['role'] = $row["role"];
+        // Verify the password
+        if (password_verify($password, $row["password"])) {
+            // Set session variables
+            $_SESSION['username'] = $row["username"];
+            $_SESSION['role'] = $row["role"];
 
-        // Set response data
-        $responseData = [
-            "success" => true,
-            "username" => $row["username"],
-            "role" => $row["role"],
-            "redirect" => "admin_dashboard.php" // Change to desired redirect URL
-        ];
-
-        // Send response
-        header("Content-Type: application/json");
-        echo json_encode($responseData);
+            // Set response data
+            $responseData = [
+                "success" => true,
+                "username" => $row["username"],
+                "role" => $row["role"],
+                "redirect" => $row["role"] === "admin" ? "admin_dashboard.php" : "user_dashboard.php" // Role-based redirect
+            ];
+        } else {
+            // Invalid password
+            $responseData = [
+                "success" => false,
+                "message" => "Invalid username or password"
+            ];
+        }
     } else {
-        // Set response data
+        // User not found
         $responseData = [
             "success" => false,
             "message" => "Invalid username or password"
         ];
-
-        // Send response
-        header("Content-Type: application/json");
-        echo json_encode($responseData);
     }
+
+    // Send response
+    header("Content-Type: application/json");
+    echo json_encode($responseData);
+
+    // Close statement
+    $stmt->close();
 }
 
 // Close database connection

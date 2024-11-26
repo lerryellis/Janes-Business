@@ -104,7 +104,7 @@ if (isset($_POST['remove_item'])) {
             <?php endforeach; ?>
         </tbody>
     </table>
-    <form action="finalize_order.php" method="POST">
+    <form action="../api/payments.php" method="POST">
         <input type="hidden" name="cart_data" value="<?php echo htmlspecialchars(json_encode($cartData)); ?>">
         <button type="submit">Place Order</button>
     </form>

@@ -12,7 +12,6 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-echo "Database connected successfully!";
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +31,7 @@ echo "Database connected successfully!";
                 <button onclick="showSection('product-management')">Product Management</button>
                 <button onclick="showSection('order-management')">Order Management</button>
                 <button onclick="showSection('report-generation')">Generate Reports</button>
+                <button onclick="showSection('user-management')">User Management</button>
             </nav>
         </header>
 
@@ -94,10 +94,50 @@ echo "Database connected successfully!";
                     ?>
                 </div>
             </section>
+
+            <!-- User Management Section -->
+            <section id="user-management" class="dashboard-section">
+                <h2>User Management</h2>
+                <form id="user-form" method="post" action="add_user.php">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <select name="role" required>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                    </select>
+                    <button type="submit">Add User</button>
+                </form>
+                <div id="user-list">
+                    <h3>Existing Users</h3>
+                    <?php
+                    // Fetch and display users
+                    $sql = "SELECT username, role FROM users LIMIT 10";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            echo "<p>Username: " . $row["username"] . " - Role: " . $row["role"] . "</p>";
+                        }
+                    } else {
+                        echo "No users found.";
+                    }
+                    ?>
+                </div>
+            </section>
         </main>
     </div>
 
-    <script src="../public/js/dashboard.js"></script>
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.dashboard-section');
+            sections.forEach(section => section.style.display = 'none');
+
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Show the first section by default
+        document.addEventListener('DOMContentLoaded', () => showSection('product-management'));
+    </script>
 </body>
 </html>
 

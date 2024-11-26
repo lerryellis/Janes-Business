@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
     // Check if the data is not empty
-    if (!empty($data)) {
+    if (!empty($data['registerUsername']) && !empty($data['registerEmail']) && !empty($data['registerPhoneNumber']) && !empty($data['registerPassword'])) {
         // Extract the data
         $username = $data['registerUsername'];
         $email = $data['registerEmail'];
@@ -29,20 +29,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // Check if the username, email, and phone number are already taken
-        $query = "SELECT * FROM users WHERE username = '$username' OR email = '$email' OR phone_number = '$phoneNumber'";
-        $result = $conn->query($query);
+        // Check if the username, email, and phone number are already taken using prepared statements
+        $query = "SELECT * FROM users WHERE username = ? OR email = ? OR phone_number = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("sss", $username, $email, $phoneNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
+            // Close the prepared statement and connection
+            $stmt->close();
             echo json_encode(['success' => false, 'message' => 'Username, email, or phone number is already taken.']);
         } else {
-            // Insert the user data into the database
-            $query = "INSERT INTO users (username, email, phone_number, password) VALUES ('$username', '$email', '$phoneNumber', '$hashedPassword')";
+             // Insert into database
+        $sql = "INSERT INTO users (username, password, email, role, phone_number) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssss", $username, $hashed_password, $email, $role, $phone_number);
 
-            if ($conn->query($query) === TRUE) {
+            if ($stmt->execute()) {
+                // Close the prepared statement and connection
+                $stmt->close();
                 echo json_encode(['success' => true, 'message' => 'Registration successful.']);
             } else {
-                echo json_encode(['success' => false, 'message' => 'Error: ' . $query . '<br>' . $conn->error]);
+                // Close the prepared statement and connection
+                $stmt->close();
+                echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
             }
         }
     } else {
