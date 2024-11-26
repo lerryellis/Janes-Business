@@ -1,0 +1,82 @@
+/* Add font options */
+body {
+    font-family: Poppings, sans-serif; /* Default font */
+}
+
+/* Optional fonts */
+.font-opensans {
+    font-family: 'poppings', sans-serif;
+}
+
+.font-montserrat {
+    font-family: 'poppings', sans-serif;
+}
+
+.font-roboto {
+    font-family: 'poppings', sans-serif;
+}
+
+.background {
+    background-image: url('..//src/images/shoestore.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: #fff;
+    padding: 70px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    width: 180px;
+    height: 100px;
+    margin: 0 auto;
+    display: block;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.form-group {
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 1px;
+    text-align: left;
+}
+
+.form-group input {
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+    margin: 0 auto;
+}
