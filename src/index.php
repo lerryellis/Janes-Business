@@ -21,7 +21,7 @@ $cartCount = count($_SESSION['cart']);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,7 +47,7 @@ $cartCount = count($_SESSION['cart']);
         </div>
         <div class="navigation-right">
             <a href="checkout.php"><img src="images/bag-black.png" alt="Shopping Bag"></a>
-            <span id="cart-count"><?php echo $cartCount; ?></span> 
+            <span id="cart-count"><?php echo $cartCount; ?></span>
             <span id="username-display"><?php echo "Welcome, " . $username; ?></span> 
             <a href="loginpage.php" class="login-btn" id="login-btn"><?php echo $loggedIn ? 'Logout' : 'Login'; ?></a>
         </div>
@@ -96,24 +96,28 @@ $cartCount = count($_SESSION['cart']);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="app.js"></script>
     <script>
-        // PHP will inject the session status into the JavaScript variable
-        var isLoggedIn = <?php echo $loggedIn ? 'true' : 'false'; ?>;
+    // PHP will inject the session status into the JavaScript variable
+var isLoggedIn = <?php echo $loggedIn ? 'true' : 'false'; ?>;
 
-        window.onload = function() {
-            var loginButton = document.getElementById("login-btn");
-            var usernameDisplay = document.getElementById("username-display");
-            
-            if (isLoggedIn) {
-                // Update the button text to "Logout" and show the username
-                loginButton.textContent = "Logout";
-                loginButton.href = "logout.php";
-                usernameDisplay.textContent = "Welcome, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>";
-            } else {
-                // Keep the button text as "Login"
-                loginButton.textContent = "Login";
-                loginButton.href = "loginpage.php";
-            }
-        };
+window.onload = function() {
+    var loginButton = document.getElementById("login-btn");
+    var usernameDisplay = document.getElementById("username-display");
+    
+    if (isLoggedIn) {
+        // Update the button text to "Logout" and show the username
+        loginButton.textContent = "Logout";
+        loginButton.href = "../auth/api/logout.php";
+        usernameDisplay.textContent = "Welcome, <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?>";
+        // Move the text up or down
+        usernameDisplay.style.marginTop = "-5px"; // adjust the value as needed
+    } else {
+        // Keep the button text as "Login"
+        loginButton.textContent = "Login";
+        loginButton.href = "loginpage.php";
+        // Move the text up or down
+        loginButton.style.marginTop = "-5px"; // adjust the value as needed
+    }
+};
     </script>
 
 </body>

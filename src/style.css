@@ -56,7 +56,45 @@ body {
 .navigation-right {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Distribute items evenly with equal space */
+  margin-top: -10px; /* Move the elements up by 10 pixels */
 }
+#login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* Ensure a fixed height for alignment */
+  padding: 0 15px; /* Add some padding for a better look */
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px; /* Adjust font size if necessary */
+  line-height: normal; /* Prevent text from stretching */
+  cursor: pointer;
+}
+
+#cart-count {
+  position: absolute;
+  top: -5px; /* Adjust for proper alignment */
+  right: -5px; /* Adjust for proper alignment */
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.cart-link {
+  position: relative; /* Necessary to position the bubble relative to the cart icon */
+  display: inline-block;
+}
+
 
 .login-btn {
   background-color: #185c03;
@@ -391,21 +429,27 @@ body {
   position: relative;
 }
 #username-display {
-  font-family: 'poppings', sans-serif; /* Changed font to Segoe UI */
+  font-family: 'Montserrat', sans-serif; /* Changed font to Segoe UI */
   font-size: 20px; /* Increased font size */
   color: #000000; /* Changed font color to blue */
 }
+
+
 .cart-count {
   position: absolute;
   top: -10px;
   right: -10px;
   background-color: #ff0000;
-  color: #000000;
-  font-size: 12px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: bold;
   padding: 2px 5px;
   border-radius: 50%;
   z-index: 1;
- }
+  font-family: 'Montserrat', sans-serif; /* Updated font family */
+  letter-spacing: 0.5px; /* Added letter spacing */
+  margin-left: 5px; /* Added margin to adjust spacing */
+}
 
 /* Centered Login Popup */
 #login-popup {
