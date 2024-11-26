@@ -43,7 +43,8 @@ $cartCount = count($_SESSION['cart']);
             <a href="kids.php">Kids</a>
         </div>
         <div class="navigation-center">
-            <img src="images/logo2.png" alt="Logo">
+           <a href="index.php">
+            <img src="images/logo3.png" alt="Logo"  style="margin-left:100px;">
         </div>
         <div class="navigation-right">
             <a href="checkout.php"><img src="images/bag-black.png" alt="Shopping Bag"></a>

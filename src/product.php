@@ -24,6 +24,7 @@ if ($conn->connect_error) {
     <title>Products</title>
     <link rel="stylesheet" href="product.css">
     <link rel="stylesheet" href="men.css">
+    <link rel="stylesheet" href="new-style.css">
 
     <style>
         /* Add styles to remove scrollbars */
