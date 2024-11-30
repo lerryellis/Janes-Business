@@ -1,6 +1,5 @@
 <?php
 require_once '../api/auth/db_connection.php';
-
 // Get order ID from URL parameter
 $id = $_GET['id'];
 
@@ -8,6 +7,14 @@ $id = $_GET['id'];
 $sql = "SELECT * FROM orders WHERE order_id = '$id'";
 $result = $conn->query($sql);
 $order = $result->fetch_assoc();
+
+// Fetch order items
+$sql_items = "SELECT oi.quantity, p.name, oi.price, (oi.quantity * oi.price) AS total_price 
+               FROM order_items oi 
+               INNER JOIN products p ON oi.product_id = p.product_id 
+               WHERE oi.order_id = '$id'";
+$result_items = $conn->query($sql_items);
+$order_items = $result_items->fetch_all(MYSQLI_ASSOC);
 
 ?>
 
@@ -45,7 +52,11 @@ $order = $result->fetch_assoc();
             <p>Status: <?php echo $order['status']; ?></p>
 
             <h3>Order Items:</h3>
-            <!-- You will need to add code here to fetch and display the order items -->
+            <ul>
+                <?php foreach ($order_items as $item) { ?>
+                    <li><?php echo $item['name']; ?> x <?php echo $item['quantity']; ?> = $<?php echo $item['total_price']; ?></li>
+                <?php } ?>
+            </ul>
 
             <button onclick="window.print()">Print Order</button>
         </main>

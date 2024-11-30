@@ -71,8 +71,13 @@ $conn->close();
 <body>
     <div class="background">
         <div class="container">
-            <img src="..//src/images/logo3.png" alt="Company Logo" class="logo">
-            <h1>Register</h1>
+        <a href="loginpage.php">
+                    <img src="..//src/images/back-arrow.png" alt="Back Arrow" class="back-arrow">
+                </a>
+            <a href="index.php">
+                <img src="..//src/images/logo3.png" alt="Company Logo" class="logo">
+            </a>
+            <h1></h1>
             <form method="POST" action="" class="form">
                 <div class="form-group">
                     <label for="registerUsername">Username:</label>

@@ -1,0 +1,107 @@
+/* Navigation */
+.navigation {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    padding: 0 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1;
+  }
+  
+  .navigation-left {
+    margin-left: -33px;
+  }
+  
+  .navigation-left a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    width: 107px;
+    height: 30px;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    display: inline-block;
+    text-align: center;
+    line-height: 25px;
+    transition: all .2s;
+  }
+  
+  .navigation-left a:hover,
+  .navigation-left a:focus {
+    border-color: rgb(108, 110, 108);
+    background-color: rgba(44, 45, 47, 0);
+  }
+  
+  .navigation-center {
+    margin-right: 85px;
+  }
+  
+  .navigation-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribute items evenly with equal space */
+    margin-top: -10px; /* Move the elements up by 10 pixels */
+  }
+  
+  #login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px; /* Ensure a fixed height for alignment */
+    padding: 0 15px; /* Add some padding for a better look */
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px; /* Adjust font size if necessary */
+    line-height: normal; /* Prevent text from stretching */
+    cursor: pointer;
+  }
+  
+  #cart-count {
+    position: absolute;
+    top: -5px; /* Adjust for proper alignment */
+    right: -5px; /* Adjust for proper alignment */
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .cart-link {
+    position: relative; /* Necessary to position the bubble relative to the cart icon */
+    display: inline-block;
+  }
+  
+  
+  .login-btn {
+    background-color: #185c03;
+    width: 97px;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 15px;
+    border: none;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin-left: 20px;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .login-btn:hover {
+    transform: scale(1.06);
+  }
+  

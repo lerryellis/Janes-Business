@@ -1,7 +1,8 @@
 /* Add font options */
 body {
     font-family: Poppings, sans-serif; /* Default font */
-}
+       
+      }
 
 /* Optional fonts */
 .font-opensans {
@@ -29,30 +30,44 @@ body {
 .container {
     background-color: #fff;
     padding: 70px;
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    height: 300px;
+    margin-top: 80px;
+    /* opacity: 0.5; /* Initial opacity is 50% */
+   /*  transition: opacity 0.3s; /* Add a transition effect */
+  }
+  
+  .container:hover {
+    opacity: 1; /* Opacity changes to 100% on hover */
+  }
 
 .logo {
     width: 180px;
-    height: 100px;
+    height: 90px;
     margin: 0 auto;
     display: block;
+    margin-top: -70px; /* Move the logo 50px from the top */
+    margin-left: -10px; /* Move the logo 50px from the left */
 }
 
 h1 {
     text-align: center;
+    margin-top: -10px; /* Move the logo 50px from the top */
+    margin-left: -10px; /* Move the logo 50px from the left */
 }
 
 .form {
     display: flex;
     flex-direction: column;
     align-items: left;
+    margin-top: -10px; /* Move the logo 50px from the top */
+    margin-left: -50px; /* Move the logo 50px from the left */
 }
 
 .form-group {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     width: 100%;
 }
 
@@ -63,9 +78,9 @@ h1 {
 }
 
 .form-group input {
-    width: 100%;
-    height: 40px;
-    padding: 5px;
+    width: 110%;
+    height: 10px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
@@ -79,4 +94,34 @@ h1 {
     cursor: pointer;
     width: 100px;
     margin: 0 auto;
+    margin-top: 0px; /* Move the logo 50px from the top */
+    margin-left: 0px; /* Move the logo 50px from the left */
 }
+
+.login-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+    margin-top: -40px;
+    margin-left:110px; /* Move the logo 50px from the left */
+  }
+  
+  .login-button:hover {
+    background-color: #3e8e41;
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .back-arrow {
+    position: absolute;
+    top: 190px; /* Adjust the top position as needed */
+    left: 620px; /* Adjust the left position as needed */
+    width: 20px;
+    height: 20px;
+  }

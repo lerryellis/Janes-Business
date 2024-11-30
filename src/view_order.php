@@ -9,6 +9,14 @@ $sql = "SELECT * FROM orders WHERE order_id = '$id'";
 $result = $conn->query($sql);
 $order = $result->fetch_assoc();
 
+// Fetch order items
+$sql_items = "SELECT oi.quantity, p.name, oi.price, (oi.quantity * oi.price) AS total_price 
+               FROM order_items oi 
+               INNER JOIN products p ON oi.product_id = p.product_id 
+               WHERE oi.order_id = '$id'";
+$result_items = $conn->query($sql_items);
+$order_items = $result_items->fetch_all(MYSQLI_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -16,13 +24,13 @@ $order = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details | Admin Dashboard</title>
+    <title>View Order | Admin Dashboard</title>
     <link rel="stylesheet" href="../public/css/dashboard.css">
 </head>
 <body>
     <div class="dashboard">
         <header>
-            <h1>Order Details</h1>
+            <h1>View Order</h1>
         </header>
         <nav>
             <button onclick="location.href='order_management.php'">Back to Order Management</button>
@@ -35,7 +43,11 @@ $order = $result->fetch_assoc();
             <p>Status: <?php echo $order['status']; ?></p>
 
             <h3>Order Items:</h3>
-            <!-- You will need to add code here to fetch and display the order items -->
+            <ul>
+                <?php foreach ($order_items as $item) { ?>
+                    <li><?php echo $item['name']; ?> x <?php echo $item['quantity']; ?> = $<?php echo $item['total_price']; ?></li>
+                <?php } ?>
+            </ul>
         </main>
     </div>
 </body>
